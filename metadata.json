@@ -1,0 +1,6 @@
+{
+  "name": "Punit Caterers Quotation Generator",
+  "description": "Modern, mobile-friendly quotation generator for Punit Caterers with pre-configured templates and Gujarati language support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
