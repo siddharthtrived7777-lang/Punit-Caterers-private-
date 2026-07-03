@@ -483,8 +483,9 @@ export default function App() {
       const ratio = canvasWidth / pdfWidth;
       const imgHeightOnPdf = canvasHeight / ratio;
 
-      if (imgHeightOnPdf <= pdfHeight) {
-        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, imgHeightOnPdf, undefined, 'FAST');
+      // Add a 2.5mm visual tolerance threshold to prevent float-rounding errors from creating a blank 2nd page
+      if (imgHeightOnPdf <= pdfHeight + 2.5) {
+        pdf.addImage(imgData, 'JPEG', 0, 0, pdfWidth, Math.min(pdfHeight, imgHeightOnPdf), undefined, 'FAST');
       } else {
         // Safe multi-page flow if content goes beyond single page
         let heightLeft = imgHeightOnPdf;
@@ -528,7 +529,10 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] selection:bg-[#2563EB] selection:text-white pb-8">
+    <div 
+      className="min-h-screen text-[#0F172A] selection:bg-[#2563EB] selection:text-white pb-8 bg-cover bg-center bg-no-repeat bg-fixed"
+      style={{ backgroundImage: 'linear-gradient(rgba(248, 250, 252, 0.90), rgba(248, 250, 252, 0.90)), url("/01-1000198437.png")' }}
+    >
       {/* Toast Notification */}
       {toastMessage && (
         <div 
@@ -1238,201 +1242,144 @@ export default function App() {
           zIndex: -50,
           width: '794px',
           height: '1123px',
-          overflow: 'visible',
+          overflow: 'hidden',
         }}
       >
         <div 
           ref={printableRef}
-          className="w-[794px] p-10 relative flex flex-col justify-between"
+          className="w-[794px] h-[1123px] p-12 relative flex flex-col justify-between"
           style={{
             fontFamily: '"Inter", "Noto Sans Gujarati", sans-serif',
-            minHeight: '1123px', // Exactly A4 height at 96 DPI
-            border: '14px solid #2563EB', // Blue premium outer border
             backgroundColor: '#FFFFFF',
             color: '#1c1917',
+            boxSizing: 'border-box',
+            overflow: 'hidden',
           }}
         >
-          {/* Inner Blue Elegant Border */}
+          {/* Faded Background Logo - Compulsory */}
+          <div className="absolute inset-0 z-0 pointer-events-none select-none">
+            <img 
+              src="/file_000000007bd07207acc3c500ea6627e7.png" 
+              alt="Faded Background Logo" 
+              className="w-full h-full object-cover"
+              style={{
+                opacity: 0.5,
+                filter: 'brightness(0.5)',
+              }}
+              referrerPolicy="no-referrer"
+            />
+          </div>
+
+          {/* Main Layout Container */}
           <div 
-            className="p-8 h-full flex flex-col justify-between flex-1 relative"
-            style={{ border: '1.5px solid rgba(37, 99, 235, 0.5)' }}
+            className="h-full flex flex-col justify-between flex-1 relative z-10"
+            style={{ 
+              boxSizing: 'border-box',
+              height: '100%'
+            }}
           >
             
-            {/* Decorative Corners */}
-            {/* Top-Left Branch */}
-            <div className="absolute top-0 left-0 w-32 h-32 overflow-hidden pointer-events-none select-none">
-              <svg width="128" height="128" viewBox="0 0 128 128">
-                <path d="M 0,0 L 110,0 C 90,30 30,90 0,110 Z" fill="#2563EB" />
-                <path d="M 0,113 C 35,93 93,35 113,0" fill="none" stroke="#2563EB" strokeWidth="2" />
-                <path d="M 0,117 C 38,97 97,38 117,0" fill="none" stroke="#1E40AF" strokeWidth="0.75" opacity="0.8" />
-                <path d="M 10,10 Q 45,45 80,80" stroke="#1E40AF" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                <path d="M 30,30 Q 42,20 48,28 Q 38,38 30,30 Z" fill="#2563EB" />
-                <path d="M 30,30 Q 20,42 28,48 Q 38,38 30,30 Z" fill="#2563EB" />
-                <path d="M 50,50 Q 62,40 68,48 Q 58,58 50,50 Z" fill="#2563EB" />
-                <path d="M 50,50 Q 40,62 48,68 Q 58,58 50,50 Z" fill="#2563EB" />
-                <path d="M 70,70 Q 82,60 88,68 Q 78,78 70,70 Z" fill="#2563EB" />
-              </svg>
-            </div>
-
-            {/* Bottom-Left Swoop */}
-            <div className="absolute bottom-0 left-0 w-24 h-24 overflow-hidden pointer-events-none select-none">
-              <svg width="96" height="96" viewBox="0 0 96 96">
-                <path d="M 0,96 L 0,65 C 20,75 75,90 96,96 Z" fill="#2563EB" />
-                <path d="M 0,62 C 22,72 77,87 96,94" fill="none" stroke="#2563EB" strokeWidth="1.5" />
-              </svg>
-            </div>
-
-            {/* Bottom-Right Branch */}
-            <div className="absolute bottom-0 right-0 w-32 h-32 overflow-hidden pointer-events-none select-none">
-              <svg width="128" height="128" viewBox="0 0 128 128">
-                <path d="M 128,128 L 18,128 C 38,98 98,38 128,18 Z" fill="#2563EB" />
-                <path d="M 128,15 C 95,35 35,95 15,128" fill="none" stroke="#2563EB" strokeWidth="2" />
-                <path d="M 128,11 C 91,31 31,91 11,128" fill="none" stroke="#1E40AF" strokeWidth="0.75" opacity="0.8" />
-                <path d="M 118,118 Q 83,83 48,48" stroke="#1E40AF" strokeWidth="1.5" strokeLinecap="round" fill="none" />
-                <path d="M 98,98 Q 86,108 80,100 Q 90,90 98,98 Z" fill="#2563EB" />
-                <path d="M 98,98 Q 108,86 100,80 Q 90,90 98,98 Z" fill="#2563EB" />
-                <path d="M 78,78 Q 66,88 60,80 Q 70,70 78,78 Z" fill="#2563EB" />
-                <path d="M 78,78 Q 88,66 80,60 Q 70,70 78,78 Z" fill="#2563EB" />
-                <path d="M 58,58 Q 46,68 40,60 Q 50,50 58,58 Z" fill="#2563EB" />
-              </svg>
-            </div>
-
             {/* Top-Right Ribbon Badge */}
-            <div className="absolute top-0 right-8 w-20 h-36 pointer-events-none select-none z-10">
-              <svg width="80" height="144" viewBox="0 0 80 144">
+            <div className="absolute top-0 right-6 w-16 h-28 pointer-events-none select-none z-10">
+              <svg width="64" height="112" viewBox="0 0 80 140">
                 <path d="M 4,0 L 76,0 L 76,120 L 40,100 L 4,120 Z" fill="#1E40AF" />
                 <path d="M 8,0 L 8,112 L 40,94 L 72,112 L 72,0" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1.5" />
-                <path d="M 11,0 L 11,108 L 40,90 L 69,108 L 69,0" fill="none" stroke="rgba(255,255,255,0.2)" strokeWidth="0.5" opacity="0.8" />
-                
-                <g transform="translate(25, 12)">
-                  <path d="M 4,18 L 24,18 L 24,15 C 24,15 28,15 28,10 C 28,5 24,3 21,5 C 21,1 17,-1 14,0 C 11,-1 7,1 7,5 C 4,3 0,5 0,10 C 0,15 4,15 4,15 Z" fill="rgba(255, 255, 255, 0.15)" stroke="#fff" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M 6,18 L 22,18" stroke="#fff" strokeWidth="1.5" />
-                </g>
-                <text x="40" y="56" fill="#fff" fontSize="8" fontWeight="bold" fontFamily="Georgia, serif" textAnchor="middle" letterSpacing="0.05em">CATERING</text>
-                <text x="40" y="67" fill="#fff" fontSize="8" fontWeight="bold" fontFamily="Georgia, serif" textAnchor="middle" letterSpacing="0.05em">QUOTATION</text>
-                <path d="M 24,78 Q 40,70 56,78" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
-                <circle cx="40" cy="74" r="1.5" fill="#fff" />
+                <text x="40" y="52" fill="#fff" fontSize="8" fontWeight="bold" fontFamily="Georgia, serif" textAnchor="middle" letterSpacing="0.05em">CATERING</text>
+                <text x="40" y="64" fill="#fff" fontSize="8" fontWeight="bold" fontFamily="Georgia, serif" textAnchor="middle" letterSpacing="0.05em">QUOTATION</text>
+                <path d="M 24,76 Q 40,68 56,76" fill="none" stroke="rgba(255,255,255,0.4)" strokeWidth="1" />
+                <circle cx="40" cy="72" r="1.5" fill="#fff" />
               </svg>
             </div>
 
-            {/* Header / Logo Section */}
-            <div className="text-center pt-2 pb-5">
-              <span className="tracking-[0.3em] text-[10px] block text-stone-400 font-serif mb-1">✨ SHREE GANESHAY NAMAH ✨</span>
-              
-              <h1 className="font-serif font-extrabold tracking-widest text-3xl text-[#1E40AF]">PUNIT CATERERS</h1>
-              <p className="text-[11px] tracking-[0.25em] font-bold uppercase text-[#2563EB] mt-1">Delicious Food • Memorable Events</p>
-              
-              {/* Divider Flourish */}
-              <div className="flex items-center justify-center my-3 select-none pointer-events-none">
-                <svg width="140" height="10" viewBox="0 0 140 10">
-                  <path d="M 0,5 L 55,5 Q 60,1 65,5 Q 70,9 75,5 Q 80,1 85,5 L 140,5" fill="none" stroke="#2563EB" strokeWidth="1.25" />
-                  <circle cx="70" cy="5" r="2.5" fill="#1E40AF" stroke="#2563EB" strokeWidth="0.75" />
-                </svg>
-              </div>
+            {/* 1. Header Section */}
+            <div className="text-center pt-2 pb-1 relative z-10">
+              <span className="tracking-[0.3em] text-[10px] block text-[#1E40AF]/70 font-serif mb-1 uppercase font-bold">✨ SHREE GANESHAY NAMAH ✨</span>
+              <h1 className="font-serif font-extrabold tracking-[0.15em] text-3xl text-[#1E40AF]">PUNIT CATERERS</h1>
+              <p className="text-[10px] tracking-[0.2em] font-bold uppercase text-[#2563EB] mt-0.5">Delicious Food • Memorable Events</p>
             </div>
 
-            {/* Event Details Grid - Structured Dual Column */}
-            <div className="bg-white/90 border border-stone-200/80 rounded-2xl p-6 shadow-sm space-y-4 relative z-10 mb-6">
-              
-              {/* Row 1: Client Name & Serving Time */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-full bg-[#EFF4FF] border border-blue-200 flex items-center justify-center shrink-0">
-                    <User className="w-5.5 h-5.5 text-[#2563EB]" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-stone-500">Client Name / ગ્રાહકનું નામ</p>
-                    <p className="font-extrabold text-[15px] text-stone-950">{clientName.trim() || 'N/A'}</p>
-                  </div>
-                </div>
+            {/* 2. Title Section */}
+            <div className="text-center pb-1 relative z-10">
+              <h2 className="font-serif font-extrabold tracking-[0.25em] text-base text-[#1E40AF] mt-1.5 uppercase">CATERING QUOTATION</h2>
+            </div>
 
-                <div className="flex items-center gap-3.5 border-l border-stone-150 pl-4">
-                  <div className="w-11 h-11 rounded-full bg-[#EFF4FF] border border-blue-200 flex items-center justify-center shrink-0">
-                    <Clock className="w-5.5 h-5.5 text-[#2563EB]" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-stone-500">Time / સમય</p>
-                    <p className="font-extrabold text-[15px] text-stone-950">{servingTime.trim() || 'N/A'}</p>
-                  </div>
-                </div>
-              </div>
+            {/* 3. Thin gold divider */}
+            <div className="flex items-center justify-center my-2 select-none pointer-events-none relative z-10">
+              <div className="w-56 h-[1.5px] bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent"></div>
+            </div>
 
-              {/* Row 2: Event Address & Total Guests */}
-              <div className="grid grid-cols-2 gap-4 border-t border-stone-100 pt-4">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-full bg-[#EFF4FF] border border-blue-200 flex items-center justify-center shrink-0">
-                    <MapPin className="w-5.5 h-5.5 text-[#2563EB]" />
+            {/* 4. Client Information Card - Two neat columns with equal spacing */}
+            <div className="bg-white border border-stone-200 rounded-xl p-5 shadow-sm relative z-10 my-2">
+              <div className="grid grid-cols-2 gap-x-8 gap-y-3.5">
+                
+                {/* Column 1 */}
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Client Name / ગ્રાહકનું નામ</p>
+                    <p className="font-extrabold text-[16px] text-stone-900 mt-0.5">{clientName.trim() || 'N/A'}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-stone-500">Event Address / પ્રસંગનું સ્થળ</p>
-                    <p className="font-extrabold text-[13px] text-stone-950 break-words max-w-[240px] leading-snug">{eventAddress.trim() || 'N/A'}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3.5 border-l border-stone-150 pl-4">
-                  <div className="w-11 h-11 rounded-full bg-[#EFF4FF] border border-blue-200 flex items-center justify-center shrink-0">
-                    <Users className="w-5.5 h-5.5 text-[#2563EB]" />
+                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Event Date / પ્રસંગની તારીખ</p>
+                    <p className="font-extrabold text-[16px] text-[#2563EB] mt-0.5">{eventDate || 'N/A'}</p>
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-stone-500">Total Plates / કુલ પ્લેટ</p>
-                    <p className="font-extrabold text-[15px] text-[#2563EB]">{totalGuests || 'N/A'} Plates</p>
-                  </div>
-                </div>
-              </div>
-
-              {/* Row 3: Event Date & Food Type */}
-              <div className="grid grid-cols-2 gap-4 border-t border-stone-100 pt-4">
-                <div className="flex items-center gap-3.5">
-                  <div className="w-11 h-11 rounded-full bg-[#EFF4FF] border border-blue-200 flex items-center justify-center shrink-0">
-                    <Calendar className="w-5.5 h-5.5 text-[#2563EB]" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-stone-500">Event Date / પ્રસંગની તારીખ</p>
-                    <p className="font-extrabold text-[15px] text-[#2563EB]">{eventDate || 'N/A'}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3.5 border-l border-stone-150 pl-4">
-                  <div className="w-11 h-11 rounded-full bg-[#EFF4FF] border border-blue-200 flex items-center justify-center shrink-0">
-                    <Utensils className="w-5.5 h-5.5 text-[#2563EB]" />
-                  </div>
-                  <div>
-                    <p className="text-[10px] uppercase tracking-wider font-bold text-stone-500">Food Type / ભોજનનો પ્રકાર</p>
-                    <p className="font-extrabold text-[14px] text-stone-950 leading-normal">
+                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Food Type / ભોજનનો પ્રકાર</p>
+                    <p className="font-extrabold text-[16px] text-stone-900 mt-0.5 leading-snug">
                       {FOOD_TYPE_LABELS[foodType].en} / {FOOD_TYPE_LABELS[foodType].gu.split(' ')[1]}
                       {foodType === 'Jain' && jainPlates !== '' && (
-                        <span className="block text-[11px] text-[#2563EB] font-bold mt-0.5">
-                          {jainPlates} Jain | {totalGuests !== '' ? Number(totalGuests) - Number(jainPlates) : 0} Normal Plates
+                        <span className="block text-[13px] text-[#2563EB] font-bold mt-0.5">
+                          {jainPlates} Jain | {totalGuests !== '' ? Number(totalGuests) - Number(jainPlates) : 0} Normal
                         </span>
                       )}
                       {foodType === 'Swaminarayan' && swaminarayanPlates !== '' && (
-                        <span className="block text-[11px] text-[#2563EB] font-bold mt-0.5">
-                          {swaminarayanPlates} Swami. | {totalGuests !== '' ? Number(totalGuests) - Number(swaminarayanPlates) : 0} Normal Plates
+                        <span className="block text-[13px] text-[#2563EB] font-bold mt-0.5">
+                          {swaminarayanPlates} Swami. | {totalGuests !== '' ? Number(totalGuests) - Number(swaminarayanPlates) : 0} Normal
                         </span>
                       )}
                     </p>
                   </div>
                 </div>
-              </div>
 
+                {/* Column 2 */}
+                <div className="space-y-3 border-l border-stone-150 pl-6">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Serving Time / સમય</p>
+                    <p className="font-extrabold text-[16px] text-stone-900 mt-0.5">{servingTime.trim() || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Event Address / પ્રસંગનું સ્થળ</p>
+                    <p className={`font-extrabold text-stone-900 mt-0.5 break-words leading-snug ${
+                      eventAddress.trim().length > 120 
+                        ? 'text-[10px]' 
+                        : eventAddress.trim().length > 75 
+                          ? 'text-[12px]' 
+                          : 'text-[15px]'
+                    }`}>{eventAddress.trim() || 'N/A'}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Total Plates / કુલ પ્લેટ</p>
+                    <p className="font-extrabold text-[16px] text-[#2563EB] mt-0.5">{totalGuests || '0'} Plates</p>
+                  </div>
+                </div>
+
+              </div>
             </div>
 
-            {/* Selected Menu Block - 3-Column Layout inside blue frame */}
-            <div className="bg-[#EFF4FF] border border-[#2563EB]/25 rounded-2xl p-6 pt-7 pb-5 relative mb-6 shadow-inner flex-1 flex flex-col justify-start min-h-[280px]">
-              {/* Crimson Title Tab */}
-              <div className="absolute -top-3.5 left-6 bg-[#1E40AF] text-white px-4 py-1 rounded-md text-xs font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-sm border border-[#2563EB]/35">
-                <Utensils className="w-3.5 h-3.5 text-blue-100" />
+            {/* 5. Selected Menu Block - Shrinks automatically if short, grows naturally if long */}
+            <div className="bg-white border border-stone-200 rounded-xl p-5 pt-6 relative z-10 my-2 shadow-sm">
+              {/* Blue Title Badge */}
+              <div className="absolute -top-3 left-5 bg-[#1E40AF] text-white px-3 py-1 rounded-md text-[12px] font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-sm">
                 <span>Selected Menu / પસંદ કરેલ ભોજન મેનુ</span>
               </div>
 
               {(!selectedMenu.trim()) ? (
-                <p className="text-stone-400 italic text-xs text-center py-10 my-auto">No items selected yet. Please type in the menu field.</p>
+                <p className="text-stone-400 italic text-xs text-center py-6">No items selected yet. Please type in the menu field.</p>
               ) : (
-                <div className="grid grid-cols-3 gap-6 pt-2">
+                <div className="grid grid-cols-3 gap-x-6 gap-y-2">
                   {getMenuColumns(selectedMenu).map((col, colIdx) => (
-                    <div key={colIdx} className="space-y-2">
+                    <div key={colIdx} className="space-y-1.5">
                       {col.map((item, itemIdx) => (
-                        <div key={itemIdx} className="flex items-start gap-1.5 text-[11.5px] text-stone-900 font-bold leading-relaxed">
+                        <div key={itemIdx} className="flex items-start gap-1.5 text-[15px] text-stone-850 font-bold leading-relaxed">
                           <span className="text-[#2563EB] font-black select-none">•</span>
                           <span className="break-words">{item}</span>
                         </div>
@@ -1443,78 +1390,75 @@ export default function App() {
               )}
             </div>
 
-            {/* Pricing Section */}
-            <div className="grid grid-cols-3 gap-4 mb-4">
-              <div className="bg-stone-50 border border-stone-200/80 rounded-xl p-3 flex flex-col items-center justify-center text-center">
-                <div className="w-9 h-9 rounded-full bg-stone-100 flex items-center justify-center mb-1">
-                  <IndianRupee className="w-4.5 h-4.5 text-stone-850" />
-                </div>
-                <span className="text-[9px] uppercase tracking-wider font-bold text-stone-500">Per Plate Rate</span>
-                <span className="text-[8px] text-stone-400 block font-semibold">પ્લેટ દીઠ રેટ</span>
-                <span className="font-extrabold text-stone-900 text-lg mt-0.5">₹{perPlateRate || '0'}</span>
+            {/* 6. Price Summary - 3 Equal Premium Cards, Total Amount highly prominent */}
+            <div className="grid grid-cols-3 gap-4 my-2 relative z-10">
+              
+              {/* Card 1: Per Plate Rate */}
+              <div className="bg-white border border-stone-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-stone-500">Per Plate Rate</span>
+                <span className="text-[9px] text-stone-400 block font-semibold leading-none mt-0.5">પ્લેટ દીઠ ભાવ</span>
+                <span className="font-extrabold text-[#1E40AF] text-[22px] mt-1.5">₹{perPlateRate || '0'}</span>
               </div>
 
-              <div className="bg-[#EFF4FF] border border-[#2563EB]/20 rounded-xl p-3 flex flex-col items-center justify-center text-center">
-                <div className="w-9 h-9 rounded-full bg-blue-100/50 flex items-center justify-center mb-1">
-                  <Users className="w-4.5 h-4.5 text-[#2563EB]" />
-                </div>
-                <span className="text-[9px] uppercase tracking-wider font-bold text-[#1E40AF]">Total Plates</span>
-                <span className="text-[8px] text-blue-600 block font-semibold">કુલ પ્લેટ</span>
-                <span className="font-extrabold text-[#1E40AF] text-lg mt-0.5">{totalGuests || '0'}</span>
+              {/* Card 2: Total Guests */}
+              <div className="bg-white border border-stone-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
+                <span className="text-[11px] uppercase tracking-wider font-bold text-stone-500">Total Guests</span>
+                <span className="text-[9px] text-stone-400 block font-semibold leading-none mt-0.5">કુલ પ્લેટ</span>
+                <span className="font-extrabold text-[#1E40AF] text-[22px] mt-1.5">{totalGuests || '0'}</span>
               </div>
 
-              <div className="bg-[#EFF4FF] border border-blue-200 rounded-xl p-3 flex flex-col items-center justify-center text-center">
-                <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center mb-1">
-                  <IndianRupee className="w-4.5 h-4.5 text-[#1E40AF] stroke-[2.5]" />
+              {/* Card 3: Total Amount (Most Visually Prominent) */}
+              <div className="bg-[#EFF4FF] border-2 border-[#2563EB] rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-md relative z-20">
+                <div className="absolute top-0 right-0 bg-[#2563EB] text-white text-[8px] font-bold tracking-wider px-1.5 py-0.5 rounded-bl-lg uppercase">
+                  Total
                 </div>
-                <span className="text-[9px] uppercase tracking-wider font-bold text-[#1E40AF]">Total Amount</span>
-                <span className="text-[8px] text-blue-600 block font-semibold">કુલ અંદાજિત રકમ</span>
-                <span className="font-extrabold text-[#1E40AF] text-lg mt-0.5">₹{totalAmount || '0'}</span>
+                <span className="text-[11px] uppercase tracking-wider font-extrabold text-[#1E40AF]">Total Amount</span>
+                <span className="text-[9px] text-[#1E40AF]/80 block font-bold leading-none mt-0.5">કુલ અંદાજિત રકમ</span>
+                <span className="font-black text-[22px] text-[#1E40AF] mt-1.5">₹{totalAmount || '0'}</span>
               </div>
+
             </div>
 
-            {/* Special Instructions Banner */}
-            <div className="bg-stone-50 border border-stone-200/60 rounded-xl p-4 flex items-start gap-4 mb-6">
-              <div className="w-10 h-10 rounded-full bg-[#EFF4FF] border border-[#2563EB]/20 flex items-center justify-center shrink-0">
-                <FileText className="w-5 h-5 text-[#2563EB]" />
-              </div>
-              <div className="min-w-0">
-                <p className="text-[10px] uppercase tracking-wider font-bold text-stone-400">Special Instructions / ખાસ સૂચનાઓ</p>
-                <p className="text-xs text-stone-750 italic font-semibold leading-relaxed mt-1">
-                  {specialInstructions.trim() || 'None / કોઈ ખાસ સૂચના નથી'}
+            {/* 7. Notes - Completely hidden if empty */}
+            {specialInstructions.trim() ? (
+              <div className="bg-white border border-stone-200 rounded-xl p-4 my-2 relative z-10 shadow-sm">
+                <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Special Instructions / ખાસ સૂચનાઓ</p>
+                <p className="text-[13px] text-stone-700 italic font-bold leading-relaxed mt-1">
+                  {specialInstructions.trim()}
                 </p>
               </div>
-            </div>
+            ) : null}
 
-            {/* Footer & Signature Block */}
-            <div className="text-center pt-5 mt-4 border-t border-dashed border-stone-250 flex justify-between items-end relative z-10">
-              <div className="text-left space-y-1">
-                <p className="font-bold text-xs" style={{ color: '#292524' }}>For, PUNIT CATERERS</p>
-                <div className="h-14"></div>
-                <p className="text-[10px]" style={{ color: '#a8a29e' }}>Authorized Signature / સહી</p>
-              </div>
+            {/* 8. Footer Section with signature and brand only */}
+            <div className="mt-auto pt-4 flex flex-col gap-3 relative z-10 px-2 pb-1">
               
-              <div className="text-center pb-1">
-                <span className="italic font-serif text-stone-500 text-xs block mb-0.5">Thank you for choosing</span>
-                <div className="flex items-center justify-center gap-2">
-                  <svg width="32" height="16" viewBox="0 0 32 16" className="inline-block shrink-0 rotate-180">
-                    <path d="M 0,8 Q 16,3 32,8" fill="none" stroke="#2563EB" strokeWidth="1.5" />
-                    <path d="M 8,5 Q 12,1 16,6 Q 12,10 8,5 Z" fill="#2563EB" />
-                  </svg>
-                  <span className="font-serif font-extrabold tracking-widest text-[15px] text-[#1E40AF]">PUNIT CATERERS</span>
-                  <svg width="32" height="16" viewBox="0 0 32 16" className="inline-block shrink-0">
-                    <path d="M 0,8 Q 16,3 32,8" fill="none" stroke="#2563EB" strokeWidth="1.5" />
-                    <path d="M 8,5 Q 12,1 16,6 Q 12,10 8,5 Z" fill="#2563EB" />
-                  </svg>
+              <div className="flex justify-between items-end w-full">
+                {/* Left: Thank you block */}
+                <div className="text-left py-1">
+                  <span className="italic font-serif text-stone-500 text-[13px] block mb-0.5">Thank you for choosing</span>
+                  <div className="flex flex-col gap-0.5">
+                    <span className="font-serif font-extrabold tracking-widest text-[16px] text-[#1E40AF]">PUNIT CATERERS</span>
+                    <span className="text-[12px] font-medium text-stone-600 tracking-wide">Great Food | Great Service | Great Memories</span>
+                  </div>
+                  <p className="text-[11px] text-stone-400 font-medium tracking-wide mt-1.5">Serving Love since 1995 • Generated on {new Date().toLocaleDateString('en-IN')}</p>
                 </div>
-                <p className="text-[9px] text-stone-400 font-medium tracking-wide mt-1">Serving Love since 1995</p>
+
+                {/* Right: Authorized Signature */}
+                <div className="text-right pb-1">
+                  <div className="h-12"></div>
+                  <p className="font-serif font-bold text-stone-800 text-[13px] tracking-wide border-t border-stone-300 pt-1.5 w-48 text-center">
+                    Authorized Signature
+                  </p>
+                </div>
               </div>
 
-              <div className="text-right text-[10px] text-stone-400 space-y-0.5">
-                <p className="font-semibold text-stone-600">Punit Caterers</p>
-                <p className="text-[8.5px]">Ahmedabad, Gujarat</p>
-                <p className="text-[8px]">Printed: {new Date().toLocaleDateString('en-IN')}</p>
+              {/* Background/Watermark Text for Maitrik Raval - 70% visibility at the extreme bottom */}
+              <div className="text-center pointer-events-none select-none mt-2" style={{ opacity: 0.7 }}>
+                <p className="font-serif font-extrabold text-[15px] text-[#1E40AF] tracking-widest uppercase">
+                  Maitrik Raval - 9687409615
+                </p>
               </div>
+
             </div>
 
           </div>
