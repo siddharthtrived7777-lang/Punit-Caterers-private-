@@ -1293,7 +1293,7 @@ export default function App() {
 
             {/* 1. Header Section */}
             <div className="text-center pt-2 pb-1 relative z-10">
-              <span className="tracking-[0.3em] text-[10px] block text-[#1E40AF]/70 font-serif mb-1 uppercase font-bold">✨ SHREE GANESHAY NAMAH ✨</span>
+              <span className="tracking-[0.3em] text-[10px] block text-[#1E40AF]/70 font-serif mb-1 uppercase font-bold">✨ PUNIT KRUPA ✨</span>
               <h1 className="font-serif font-extrabold tracking-[0.15em] text-3xl text-[#1E40AF]">PUNIT CATERERS</h1>
               <p className="text-[10px] tracking-[0.2em] font-bold uppercase text-[#2563EB] mt-0.5">Delicious Food • Memorable Events</p>
             </div>
@@ -1343,7 +1343,7 @@ export default function App() {
                 {/* Column 2 */}
                 <div className="space-y-3 border-l border-stone-150 pl-6">
                   <div>
-                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Serving Time / સમય</p>
+                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Event Time / સમય</p>
                     <p className="font-extrabold text-[16px] text-stone-900 mt-0.5">{servingTime.trim() || 'N/A'}</p>
                   </div>
                   <div>
@@ -1450,8 +1450,8 @@ export default function App() {
 
               {/* Background/Watermark Text for Maitrik Raval - 70% visibility at the extreme bottom */}
               <div className="text-center pointer-events-none select-none mt-2" style={{ opacity: 0.7 }}>
-                <p className="font-serif font-extrabold text-[15px] text-[#1E40AF] tracking-widest uppercase">
-                  Maitrik Raval - 9687409615
+                <p className="font-serif font-extrabold text-[14px] text-[#1E40AF] tracking-widest uppercase">
+                  Maitrik Raval - 9687409615 / +91 88663 38535
                 </p>
               </div>
 
