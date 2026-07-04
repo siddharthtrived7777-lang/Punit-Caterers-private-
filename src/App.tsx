@@ -1356,10 +1356,6 @@ export default function App() {
                           : 'text-[15px]'
                     }`}>{eventAddress.trim() || 'N/A'}</p>
                   </div>
-                  <div>
-                    <p className="text-[11px] uppercase tracking-wider font-bold text-stone-400">Total Plates / કુલ પ્લેટ</p>
-                    <p className="font-extrabold text-[16px] text-[#2563EB] mt-0.5">{totalGuests || '0'} Plates</p>
-                  </div>
                 </div>
 
               </div>
@@ -1400,9 +1396,9 @@ export default function App() {
                 <span className="font-extrabold text-[#1E40AF] text-[22px] mt-1.5">₹{perPlateRate || '0'}</span>
               </div>
 
-              {/* Card 2: Total Guests */}
+              {/* Card 2: Total Plates */}
               <div className="bg-white border border-stone-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
-                <span className="text-[11px] uppercase tracking-wider font-bold text-stone-500">Total Guests</span>
+                <span className="text-[11px] uppercase tracking-wider font-bold text-stone-500">Total Plates</span>
                 <span className="text-[9px] text-stone-400 block font-semibold leading-none mt-0.5">કુલ પ્લેટ</span>
                 <span className="font-extrabold text-[#1E40AF] text-[22px] mt-1.5">{totalGuests || '0'}</span>
               </div>
