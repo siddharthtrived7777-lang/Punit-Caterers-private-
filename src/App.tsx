@@ -530,8 +530,7 @@ export default function App() {
 
   return (
     <div 
-      className="min-h-screen text-[#0F172A] selection:bg-[#2563EB] selection:text-white pb-8 bg-cover bg-center bg-no-repeat bg-fixed"
-      style={{ backgroundImage: 'linear-gradient(rgba(248, 250, 252, 0.90), rgba(248, 250, 252, 0.90)), url("/01-1000198437.png")' }}
+      className="min-h-screen text-[#0F172A] selection:bg-[#2563EB] selection:text-white pb-8 bg-slate-50"
     >
       {/* Toast Notification */}
       {toastMessage && (
@@ -1266,6 +1265,7 @@ export default function App() {
                 opacity: 0.5,
                 filter: 'brightness(0.5)',
               }}
+              crossOrigin="anonymous"
               referrerPolicy="no-referrer"
             />
           </div>
