@@ -1362,7 +1362,7 @@ export default function App() {
             </div>
 
             {/* 5. Selected Menu Block - Shrinks automatically if short, grows naturally if long */}
-            <div className="bg-white border border-stone-200 rounded-xl p-5 pt-6 relative z-10 my-2 shadow-sm">
+            <div className="bg-white border border-stone-200 rounded-xl p-5 pt-6 relative z-10 mt-5 mb-4 shadow-sm">
               {/* Blue Title Badge */}
               <div className="absolute -top-3 left-5 bg-[#1E40AF] text-white px-3 py-1 rounded-md text-[12px] font-bold tracking-wider uppercase flex items-center gap-1.5 shadow-sm">
                 <span>Selected Menu / પસંદ કરેલ ભોજન મેનુ</span>
@@ -1387,7 +1387,7 @@ export default function App() {
             </div>
 
             {/* 6. Price Summary - 3 Equal Premium Cards, Total Amount highly prominent */}
-            <div className="grid grid-cols-3 gap-4 my-2 relative z-10">
+            <div className="grid grid-cols-3 gap-4 mt-4 mb-2 relative z-10">
               
               {/* Card 1: Per Plate Rate */}
               <div className="bg-white border border-stone-200 rounded-xl p-4 flex flex-col items-center justify-center text-center shadow-sm">
